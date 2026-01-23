@@ -29,7 +29,7 @@
 #include "svc_sched.h"
 #include "svc_tim.h"
 #include <string.h>
-#include "svc_rs485.h"
+//#include "svc_rs485.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,52 +102,96 @@ int main(void)
   MX_TIM5_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-	uart_rx_init();
-	LL_GPIO_SetOutputPin(U3_DIR_GPIO_Port, U3_DIR_Pin);  // 锟斤拷锟斤拷为锟斤拷锟斤拷模式
-    LL_mDelay(1);
-    while(!LL_USART_IsActiveFlag_TXE(USART3));
-    LL_USART_TransmitData8(USART3, 'A');  // 锟斤拷锟酵诧拷锟斤拷锟街凤拷
-    while(!LL_USART_IsActiveFlag_TC(USART3));
-    LL_GPIO_ResetOutputPin(U3_DIR_GPIO_Port, U3_DIR_Pin);  // 锟斤拷锟斤拷为锟斤拷锟斤拷模式
+//	uart_rx_init();
+//	LL_GPIO_SetOutputPin(U3_DIR_GPIO_Port, U3_DIR_Pin);  // 锟斤拷锟斤拷为锟斤拷锟斤拷模式
+//    LL_mDelay(1);
+//    while(!LL_USART_IsActiveFlag_TXE(USART3));
+//    LL_USART_TransmitData8(USART3, 'A');  // 锟斤拷锟酵诧拷锟斤拷锟街凤拷
+//    while(!LL_USART_IsActiveFlag_TC(USART3));
+//    LL_GPIO_ResetOutputPin(U3_DIR_GPIO_Port, U3_DIR_Pin);  // 锟斤拷锟斤拷为锟斤拷锟斤拷模式
 
-  /* USER CODE END 2 */
+//  /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+//  /* Infinite loop */
+//  /* USER CODE BEGIN WHILE */
 
-uint8_t tmp[256];
-uint32_t last_blink = 0;
+//uint8_t tmp[256];
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-        uint32_t n = uart_rx_read(tmp, sizeof(tmp));
-        if (n > 0) {
-            LL_GPIO_SetOutputPin(LED0_GPIO_Port, LED0_Pin);
-			LL_GPIO_SetOutputPin(U3_DIR_GPIO_Port, U3_DIR_Pin);
-            LL_mDelay(1);
-            for(uint32_t i = 0; i < n; i++) {
-                while(!LL_USART_IsActiveFlag_TXE(USART3));
-                LL_USART_TransmitData8(USART3, tmp[i]);
-            }
-            while(!LL_USART_IsActiveFlag_TC(USART3));
-            LL_GPIO_ResetOutputPin(U3_DIR_GPIO_Port, U3_DIR_Pin);
-            
-            LL_GPIO_ResetOutputPin(LED0_GPIO_Port, LED0_Pin);
-        }
-        
-        LL_mDelay(5);
-        if(LL_USART_IsActiveFlag_ORE(USART3) || 
-           LL_USART_IsActiveFlag_FE(USART3) || 
-           LL_USART_IsActiveFlag_NE(USART3)) {
-            LL_USART_ClearFlag_ORE(USART3);
-            LL_USART_ClearFlag_FE(USART3);
-            LL_USART_ClearFlag_NE(USART3);
-        }
-LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-			LL_mDelay(100);
-	}
+	  LL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
+    LL_mDelay(1000); // 延时500ms，确保肉眼可见
+//    static uint32_t last_send = 0;
+//    if(HAL_GetTick() - last_send > 2000)
+//    {
+//        const uint8_t test_data[] = "TEST\r\n"; // 发送固定的6个字节
+//        
+//        // 1. 置位DE引脚，进入发送模式
+//        LL_GPIO_SetOutputPin(GPIOD, LL_GPIO_PIN_12); // 确保这是你的DE引脚
+//        LL_mDelay(1); // 给RS485芯片一个稳定时间
+//        
+//        // 2. 轮询发送每一个字节
+//        for(int i = 0; i < sizeof(test_data)-1; i++) // -1 是为了不发送字符串结尾的\0
+//        {
+//            // 等待发送寄存器空
+//            while(!LL_USART_IsActiveFlag_TXE(USART3));
+//            // 写入数据，开始发送
+//            LL_USART_TransmitData8(USART3, test_data[i]);
+//        }
+//        
+//        // 3. 等待最后一个字节的发送完成
+//        while(!LL_USART_IsActiveFlag_TC(USART3));
+//        
+//        // 4. 复位DE引脚，返回接收模式
+//        LL_GPIO_ResetOutputPin(GPIOD, LL_GPIO_PIN_12);
+//        
+//        // 5. 用LED指示一次发送完成
+//        LL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
+//        
+//        last_send = HAL_GetTick();
+//    }
+//    
+//    // 测试2：简单的轮询接收（如果自发自收）
+//    if(LL_USART_IsActiveFlag_RXNE(USART3))
+//    {
+//        uint8_t ch = LL_USART_ReceiveData8(USART3);
+//        // 如果收到任何数据，快速闪烁另一个LED（比如LED1）指示
+//        // LL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+//    }
+//    
+//    LL_mDelay(10);
+}
+//        uint32_t n = uart_rx_read(tmp, sizeof(tmp));
+//        if (n > 0) {
+////            LL_GPIO_SetOutputPin(LED0_GPIO_Port, LED0_Pin);
+//			LL_GPIO_SetOutputPin(U3_DIR_GPIO_Port, U3_DIR_Pin);
+//            LL_mDelay(1);
+//			
+//			
+//            for(int i = 0; i < n; i++) {
+//                while(!LL_USART_IsActiveFlag_TXE(USART3));
+//                LL_USART_TransmitData8(USART3, tmp[i]);
+//            }
+//            while(!LL_USART_IsActiveFlag_TC(USART3));
+//            LL_GPIO_ResetOutputPin(U3_DIR_GPIO_Port, U3_DIR_Pin);
+//            
+//            LL_GPIO_ResetOutputPin(LED0_GPIO_Port, LED0_Pin);
+//        }
+//        
+//        LL_mDelay(5);
+//        if(LL_USART_IsActiveFlag_ORE(USART3) || 
+//           LL_USART_IsActiveFlag_FE(USART3) || 
+//           LL_USART_IsActiveFlag_NE(USART3)) 
+//		{
+//            LL_USART_ClearFlag_ORE(USART3);
+//            LL_USART_ClearFlag_FE(USART3);
+//            LL_USART_ClearFlag_NE(USART3);
+//        }
+////LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+////			LL_mDelay(100);
+//	}
   /* USER CODE END 3 */
 }
 

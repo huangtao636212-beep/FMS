@@ -21,7 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "svc_rs485.h"
 /* USER CODE END 0 */
 
 /* USART3 init function */
@@ -78,10 +78,13 @@ void MX_USART3_UART_Init(void)
 
   /* USART3 interrupt Init */
   NVIC_SetPriority(USART3_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),5, 0));
-  NVIC_EnableIRQ(USART3_IRQn);
+//  NVIC_EnableIRQ(USART3_IRQn);
 
   /* USER CODE BEGIN USART3_Init 1 */
-
+LL_DMA_SetPeriphAddress(DMA1, LL_DMA_STREAM_0, (uint32_t)&USART3->RDR);
+LL_DMA_SetMemoryAddress(DMA1, LL_DMA_STREAM_0, (uint32_t)dma_rx_buf);
+LL_DMA_SetDataLength(DMA1, LL_DMA_STREAM_0, DMA_RX_BUF_SIZE);
+SCB_CleanInvalidateDCache_by_Addr((uint32_t*)dma_rx_buf, DMA_RX_BUF_SIZE);
   /* USER CODE END USART3_Init 1 */
   USART_InitStruct.PrescalerValue = LL_USART_PRESCALER_DIV1;
   USART_InitStruct.BaudRate = 115200;
@@ -99,6 +102,18 @@ void MX_USART3_UART_Init(void)
 
   /* USER CODE BEGIN WKUPType USART3 */
 
+// ≈‰÷√DMA÷–∂œ
+LL_DMA_EnableIT_HT(DMA1, LL_DMA_STREAM_0);
+LL_DMA_EnableIT_TC(DMA1, LL_DMA_STREAM_0);
+LL_DMA_EnableIT_TE(DMA1, LL_DMA_STREAM_0);
+NVIC_SetPriority(DMA1_Stream0_IRQn, 
+		NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 6, 0));
+NVIC_EnableIRQ(DMA1_Stream0_IRQn);
+
+// ∆Ù∂ØDMA
+LL_USART_EnableDMAReq_RX(USART3);
+LL_USART_EnableIT_IDLE(USART3);
+LL_DMA_EnableStream(DMA1, LL_DMA_STREAM_0);
   /* USER CODE END WKUPType USART3 */
 
   LL_USART_Enable(USART3);

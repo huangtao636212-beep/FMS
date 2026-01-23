@@ -46,4 +46,5 @@ fms_1.0.0_dev/usart.o: ..\Core\Src\usart.c ..\Core\Inc\usart.h \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_dmamux.h \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_tim.h \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h \
-  ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h
+  ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h \
+  ..\Platform\Inc\svc_rs485.h ..\Bsp\Core\Inc\bsp_usart.h

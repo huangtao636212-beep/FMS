@@ -208,14 +208,34 @@ void DMA1_Stream0_IRQHandler(void)
 
   /* USER CODE END DMA1_Stream0_IRQn 0 */
   /* USER CODE BEGIN DMA1_Stream0_IRQn 1 */
-#if REMOVE_LL
-	if(LL_DMA_IsActiveFlag_HT0(DMA1))
-	{
-		LL_DMA_ClearFlag_HT0(DMA1);
-		SCB_InvalidateDCache_by_Addr((uint32_t*)&dma_rx_buf[0], DMA_RX_BUF_SIZE/2);
-		
-	}
-#endif
+//#if REMOVE_LL
+//	if(LL_DMA_IsActiveFlag_HT0(DMA1))
+//	{
+//		LL_DMA_ClearFlag_HT0(DMA1);
+//		SCB_InvalidateDCache_by_Addr((uint32_t*)&dma_rx_buf[0], DMA_RX_BUF_SIZE/2);
+//		
+//	}
+//#else
+//	//    if (LL_DMA_IsActiveFlag_HT0(DMA1)) {
+//	if (LL_DMA_IsActiveFlag_HT0(DMA1)) {
+//        LL_DMA_ClearFlag_HT0(DMA1);
+//        // 无效化前半部分Cache
+//        SCB_InvalidateDCache_by_Addr((uint32_t*)&dma_rx_buf[0], DMA_RX_BUF_SIZE/2);
+//        // 搬运数据
+//        usart_rx_dma_move_new_bytes_isr();
+//    }
+
+//    if (LL_DMA_IsActiveFlag_TC0(DMA1)) {
+//        LL_DMA_ClearFlag_TC0(DMA1);
+//        // 无效化后半部分Cache
+//        SCB_InvalidateDCache_by_Addr((uint32_t*)&dma_rx_buf[DMA_RX_BUF_SIZE/2], DMA_RX_BUF_SIZE/2);
+//        // 搬运数据
+//        usart_rx_dma_move_new_bytes_isr();
+//    }
+
+//    if (LL_DMA_IsActiveFlag_TE0(DMA1)) {
+//        LL_DMA_ClearFlag_TE0(DMA1);}
+//#endif
 
   /* USER CODE END DMA1_Stream0_IRQn 1 */
 }
@@ -229,6 +249,15 @@ void USART3_IRQHandler(void)
 
   /* USER CODE END USART3_IRQn 0 */
   /* USER CODE BEGIN USART3_IRQn 1 */
+//	if (LL_USART_IsActiveFlag_IDLE(USART3)) 
+//	{
+//		/* 先搬运：把尾巴数据及时取走 */
+//		usart_rx_dma_move_new_bytes_isr();
+
+//		/* 清 IDLE（H7 用 ICR 清；读 RDR 是个保险动作，避免边界条件） */
+//		LL_USART_ClearFlag_IDLE(USART3);
+//		(void)LL_USART_ReceiveData8(USART3);
+//    }
 
   /* USER CODE END USART3_IRQn 1 */
 }

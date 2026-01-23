@@ -82,7 +82,7 @@ static uint32_t ring_buf_read_bytes(ringbuf_t* rb,uint8_t* out,uint32_t maxlen)
 	return maxlen;
 }
 /*========= DMA 循环接收 + 增量搬运 =======*/
-uint8_t dma_rx_buf[DMA_RX_BUF_SIZE];
+//uint8_t dma_rx_buf[DMA_RX_BUF_SIZE];
 static volatile uint16_t s_last_pos=0;/* 上次搬运到的位置 [0..DMA_RX_BUF_SIZE) */
 /*当前dma写到哪了*/
 static inline uint16_t dma_get_pos(void)

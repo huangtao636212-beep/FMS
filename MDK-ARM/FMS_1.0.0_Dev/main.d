@@ -50,5 +50,4 @@ fms_1.0.0_dev/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Core\Inc\dma.h ..\Core\Inc\main.h ..\Core\Inc\tim.h \
   ..\Core\Inc\usart.h ..\Core\Inc\gpio.h ..\App\Inc\app_main.h \
   ..\Platform\Inc\svc_sched.h ..\Platform\Inc\svc_tim.h \
-  E:\app\keil\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\Platform\Inc\svc_rs485.h ..\Bsp\Core\Inc\bsp_usart.h
+  E:\app\keil\ARM\ARMCLANG\Bin\..\include\string.h
